@@ -22,9 +22,9 @@ export function MobileNav() {
       className="lg:hidden fixed bottom-0 inset-x-0 z-[var(--z-fixed)] border-t border-[var(--color-border-primary)] bg-[var(--color-bg-secondary)]/95 backdrop-blur-md"
       aria-label="Mobile navigation"
     >
-      <ul className="flex justify-around gap-0 overflow-x-auto">
+      <ul className="flex items-center gap-2 overflow-x-auto px-2 scrollbar-none snap-x snap-mandatory">
         {items.map(item => (
-          <li key={item.href} className="flex-shrink-0">
+          <li key={item.href} className="flex-shrink-0 snap-center">
             <NavLink
               to={item.href}
               end={item.end}
