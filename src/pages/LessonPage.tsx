@@ -59,6 +59,22 @@ export function LessonPage() {
   const [vivaConfidence, setVivaConfidence] = useState<Record<string, string>>({});
   const [showUrdu, setShowUrdu] = useState(false);
 
+  // Reset state when lessonId changes (e.g. when navigating to the next lesson)
+  useEffect(() => {
+    setActiveSection('mission');
+    setCompletedSections(new Set());
+    setShowXpFeedback(null);
+    setXpAmount(0);
+    setShowMasteryScreen(false);
+    setMasteryBreakdown(null);
+    setCurrentMistakeIndex(0);
+    setCurrentOutputIndex(0);
+    setCurrentDebugIndex(0);
+    setCurrentCodeCompIndex(0);
+    setVivaConfidence({});
+    setShowUrdu(false);
+  }, [lessonId]);
+
   const getLessonProgress = useCallback((id: string) => {
     return progressService.getLessonProgress(id);
   }, []);
@@ -228,7 +244,11 @@ export function LessonPage() {
         moduleTitle={module?.title || ''}
         mastery={masteryBreakdown}
         xpEarned={lesson.xpReward}
-        onContinue={() => navigate(-1)}
+        onContinue={() => {
+          const next = curriculumService.getNextLesson(lesson.id);
+          if (next) navigate(`/lesson/${next.id}`);
+          else navigate(`/module/${module!.id}`);
+        }}
         onReviewWeak={() => { setShowMasteryScreen(false); setActiveSection('learn'); }}
         onRetry={() => { setShowMasteryScreen(false); setCompletedSections(new Set()); setActiveSection('mission'); }}
       />

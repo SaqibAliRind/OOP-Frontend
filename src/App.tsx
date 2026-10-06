@@ -7,6 +7,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ProtectedLessonRoute } from '@/components/routing/ProtectedLessonRoute';
 import { ProtectedModuleRoute } from '@/components/routing/ProtectedModuleRoute';
 import { ProtectedWorldRoute } from '@/components/routing/ProtectedWorldRoute';
+import { FeedbackWidget } from '@/components/ui';
 
 function PageLoader() {
   return (
@@ -99,6 +100,7 @@ function AppRoutes() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       </Suspense>
+      <FeedbackWidget />
     </ErrorBoundary>
   );
 }

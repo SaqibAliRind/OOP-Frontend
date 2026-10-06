@@ -28,6 +28,7 @@ import {
 import { cn } from '@/utils/helpers';
 import { Button, Divider, LucideIcon } from '@/components/ui';
 import { progressService } from '@/services/progressService';
+import { curriculumService } from '@/services/curriculumService';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -65,6 +66,7 @@ export function Sidebar({ isOpen, onToggle, className }: SidebarProps) {
   const location = useLocation();
   const progress = progressService.getProgress();
   const xpPercent = Math.round((progress.totalXp / (progress.totalXp + progress.xpToNextLevel)) * 100);
+  const currentCourse = curriculumService.getCurrentCourseId();
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -84,7 +86,7 @@ export function Sidebar({ isOpen, onToggle, className }: SidebarProps) {
         exit={{ width: 0, opacity: 0 }}
         transition={{ duration: 0.25, ease: [0.34, 1.56, 0.64, 1] }}
         className={cn(
-          'fixed left-0 top-0 z-[var(--z-fixed)] h-screen flex flex-col',
+          'fixed left-0 top-0 z-[var(--z-modal)] h-screen flex flex-col',
           'bg-[var(--color-bg-secondary)] border-r border-[var(--color-border-primary)]',
           'overflow-hidden transition-all duration-300',
           className
@@ -128,6 +130,33 @@ export function Sidebar({ isOpen, onToggle, className }: SidebarProps) {
             {isOpen ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
           </Button>
         </div>
+
+        {/* Track Switcher */}
+        {isOpen && (
+          <div className="px-4 py-3 border-b border-[var(--color-border-primary)] bg-[var(--color-bg-tertiary)]/30">
+            <p className="text-[10px] tracking-[0.1em] font-bold text-[var(--color-text-tertiary)] uppercase mb-2">Select Curriculum Track</p>
+            <div className="flex flex-col gap-1.5">
+              <button 
+                onClick={() => curriculumService.setCourse('c')}
+                className={cn('text-xs font-semibold py-1.5 px-3 rounded-md text-left transition-colors', currentCourse === 'c' ? 'bg-[var(--color-accent-info)] text-white' : 'hover:bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)]')}
+              >
+                🚀 C Language
+              </button>
+              <button 
+                onClick={() => curriculumService.setCourse('java')}
+                className={cn('text-xs font-semibold py-1.5 px-3 rounded-md text-left transition-colors', currentCourse === 'java' ? 'bg-[var(--color-accent-warning)] text-black' : 'hover:bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)]')}
+              >
+                ☕ Java Basics
+              </button>
+              <button 
+                onClick={() => curriculumService.setCourse('oop')}
+                className={cn('text-xs font-semibold py-1.5 px-3 rounded-md text-left transition-colors', currentCourse === 'oop' ? 'bg-[var(--color-accent-primary)] text-white' : 'hover:bg-[var(--color-bg-primary)] text-[var(--color-text-secondary)]')}
+              >
+                📦 Object-Oriented Prog.
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Primary Navigation */}
         <nav className="flex-1 overflow-y-auto p-3 space-y-0.5" aria-label="Primary navigation">

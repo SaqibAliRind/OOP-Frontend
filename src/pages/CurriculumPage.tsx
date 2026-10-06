@@ -33,18 +33,25 @@ export function CurriculumPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <Badge variant="primary" size="md" className="mb-3">Complete Curriculum</Badge>
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-[var(--color-text-primary)]">
-          15 Modules. Complete Mastery.
-        </h1>
-        <p className="text-[var(--color-text-secondary)] mt-2 max-w-2xl">
-          Progress from fundamentals to advanced design patterns. Each module builds on the previous.
-        </p>
-      </motion.div>
+      <div className="relative mb-12 p-8 rounded-3xl overflow-hidden bg-[var(--color-bg-card)] border border-[var(--color-border-primary)] shadow-lg">
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent-primary)]/20 to-[var(--color-accent-secondary)]/20" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-[radial-gradient(circle,rgba(99,102,241,0.2),transparent_70%)] animate-pulse" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="relative z-10 text-center"
+        >
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent-info)]/20 text-[var(--color-accent-info)] font-bold mb-4 uppercase tracking-widest text-xs">
+            <Rocket className="w-4 h-4" /> Mission Control
+          </div>
+          <h1 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--color-text-primary)] mb-4 tracking-tight drop-shadow-md">
+            Galactic Curriculum
+          </h1>
+          <p className="text-lg text-[var(--color-text-secondary)] max-w-2xl mx-auto font-medium">
+            15 planetary missions. Master the universe of Object-Oriented Programming step by step!
+          </p>
+        </motion.div>
+      </div>
 
       {/* Track Overview */}
       <fm.div variants={staggerChildren(0.08)} initial="hidden" animate="visible" className="grid md:grid-cols-3 gap-4">
@@ -59,8 +66,8 @@ export function CurriculumPage() {
                   <LucideIcon icon={track.icon} className="w-5 h-5" style={{ color: track.color }} />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-[var(--color-text-primary)]">{track.label}</h3>
-                  <p className="text-xs text-[var(--color-text-tertiary)]">{track.modules.length} modules</p>
+                  <h3 className="font-bold text-[var(--color-text-primary)] tracking-wide">{track.label}</h3>
+                  <p className="text-xs font-bold text-[var(--color-text-tertiary)] uppercase mt-1 tracking-wider">{track.modules.length} Zones</p>
                 </div>
               </div>
               <p className="text-sm text-[var(--color-text-secondary)]">
@@ -85,11 +92,13 @@ export function CurriculumPage() {
                 <Link
                   to={`/module/${module.id}`}
                   className={cn(
-                    'flex items-center gap-4 p-4 md:p-5 rounded-xl border transition-all group',
-                    'hover:border-[var(--color-accent-primary)]/40 hover:shadow-[var(--shadow-md)]',
-                    'bg-[var(--color-bg-card)]'
+                    'flex items-center gap-4 p-5 md:p-6 rounded-2xl border-2 transition-all group relative overflow-hidden',
+                    'hover:border-[var(--color-accent-info)] hover:shadow-glow-info hover:-translate-y-1',
+                    isCompleted ? 'bg-[var(--color-bg-card)] border-[var(--color-accent-success)]/30' : 'bg-[var(--color-bg-card)] border-[var(--color-border-primary)]'
                   )}
                 >
+                {/* Background glow on hover */}
+                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-accent-info)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 <div
                   className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0"
                   style={{ backgroundColor: `${module.color}12` }}
@@ -105,19 +114,21 @@ export function CurriculumPage() {
 
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-mono text-[var(--color-text-tertiary)]">{module.order.toString().padStart(2, '0')}</span>
-                    <h3 className="font-semibold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-primary)] transition-colors truncate">
+                    <span className="text-xs font-black text-[var(--color-text-tertiary)] bg-[var(--color-bg-input)] px-2 py-0.5 rounded-md">
+                      M-{module.order.toString().padStart(2, '0')}
+                    </span>
+                    <h3 className="font-bold text-lg text-[var(--color-text-primary)] group-hover:text-[var(--color-accent-info)] transition-colors truncate">
                       {module.title}
                     </h3>
-                    {isCompleted && <Badge variant="success" size="sm">Done</Badge>}
-                    {isInProgress && <Badge variant="primary" size="sm">Active</Badge>}
+                    {isCompleted && <Badge variant="success" size="sm" className="animate-pulse">Done!</Badge>}
+                    {isInProgress && <Badge variant="primary" size="sm">In Progress</Badge>}
                     {!isAccessible && <Badge variant="outline" size="sm">Locked</Badge>}
                   </div>
-                  <p className="text-sm text-[var(--color-text-secondary)] mb-2 line-clamp-1">{module.description}</p>
-                  <div className="flex items-center gap-4 text-xs text-[var(--color-text-tertiary)]">
-                    <span className="flex items-center gap-1"><BookOpen className="w-3 h-3" /> {module.lessons.length} lessons</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3 h-3" /> {formatDuration(module.totalDuration)}</span>
-                    <span className="flex items-center gap-1"><Star className="w-3 h-3 text-[var(--color-xp-gold)]" /> {module.xpReward} XP</span>
+                  <p className="text-sm text-[var(--color-text-secondary)] mb-3 line-clamp-1 font-medium">{module.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-[var(--color-text-tertiary)] font-bold tracking-wide">
+                    <span className="flex items-center gap-1.5"><BookOpen className="w-4 h-4 text-[var(--color-accent-primary)]" /> {module.lessons.length} Missions</span>
+                    <span className="flex items-center gap-1.5"><Clock className="w-4 h-4 text-[var(--color-accent-secondary)]" /> {formatDuration(module.totalDuration)}</span>
+                    <span className="flex items-center gap-1.5"><Star className="w-4 h-4 text-[var(--color-xp-gold)]" /> {module.xpReward} XP</span>
                   </div>
                   <ProgressBar value={moduleProgress} max={100} size="sm" variant={isCompleted ? 'success' : 'primary'} className="mt-2" />
                 </div>

@@ -1,4 +1,5 @@
 import type { Module, Curriculum } from '@/types';
+import { module00 } from './module00';
 import { module01 } from './module01';
 import { module02 } from './module02';
 import { module03 } from './module03';
@@ -15,7 +16,11 @@ import { module13 } from './module13';
 import { module14 } from './module14';
 import { module15 } from './module15';
 
-const allModules: Module[] = [
+const javaModules: Module[] = [
+  module00
+];
+
+const oopModules: Module[] = [
   module01,
   module02,
   module03,
@@ -33,15 +38,18 @@ const allModules: Module[] = [
   module15,
 ];
 
-const totalLessons = allModules.reduce((sum, m) => sum + m.lessons.length, 0);
-const totalDuration = allModules.reduce((sum, m) => sum + m.totalDuration, 0);
-const totalXp = allModules.reduce((sum, m) => sum + m.xpReward, 0);
+export const javaCurriculum: Curriculum = {
+  modules: javaModules,
+  totalLessons: javaModules.reduce((sum, m) => sum + m.lessons.length, 0),
+  totalDuration: javaModules.reduce((sum, m) => sum + m.totalDuration, 0),
+  totalXp: javaModules.reduce((sum, m) => sum + m.xpReward, 0),
+};
 
-export const curriculum: Curriculum = {
-  modules: allModules,
-  totalLessons,
-  totalDuration,
-  totalXp,
+export const oopCurriculum: Curriculum = {
+  modules: oopModules,
+  totalLessons: oopModules.reduce((sum, m) => sum + m.lessons.length, 0),
+  totalDuration: oopModules.reduce((sum, m) => sum + m.totalDuration, 0),
+  totalXp: oopModules.reduce((sum, m) => sum + m.xpReward, 0),
 };
 
 export const learningPaths: Record<string, { id: string; title: string; description: string; moduleIds: string[]; estimatedDuration: number; difficulty: 'beginner' | 'intermediate' | 'advanced' }> = {

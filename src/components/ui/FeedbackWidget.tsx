@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { MessageSquarePlus, Check, Send, Trash2 } from 'lucide-react';
+import { MessageSquarePlus, Check, Send, Trash2, X } from 'lucide-react';
 import { Button, Input, Modal } from '@/components/ui';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export interface FeedbackItem {
   id: string;
@@ -143,5 +144,51 @@ export function AdminFeedbackModal({ isOpen, onClose }: { isOpen: boolean, onClo
 }
 
 export function FeedbackWidget() {
-  return null;
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      {/* Floating Action Button */}
+      <button
+        onClick={() => setIsOpen(true)}
+        className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[var(--color-accent-primary)] text-white shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 md:bottom-8 md:right-8 group"
+        aria-label="Give Feedback"
+      >
+        <MessageSquarePlus className="w-6 h-6" />
+        {/* Tooltip on Desktop */}
+        <span className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-[var(--color-bg-elevated)] text-[var(--color-text-primary)] text-sm font-medium whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity border border-[var(--color-border-primary)] shadow-md pointer-events-none hidden md:block">
+          Give Feedback
+        </span>
+      </button>
+
+      {/* Modal for the Form */}
+      <AnimatePresence>
+        {isOpen && (
+          <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+              onClick={() => setIsOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-md z-10"
+            >
+              <button
+                onClick={() => setIsOpen(false)}
+                className="absolute -top-3 -right-3 z-20 w-8 h-8 rounded-full bg-[var(--color-bg-elevated)] border border-[var(--color-border-primary)] flex items-center justify-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-hover)] transition-colors shadow-md"
+              >
+                <X className="w-4 h-4" />
+              </button>
+              <FeedbackForm />
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </>
+  );
 }

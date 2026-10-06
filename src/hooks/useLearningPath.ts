@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { curriculum } from '@/data/curriculum';
+import { curriculumService } from '@/services/curriculumService';
+const curriculum = curriculumService.getCurriculum();
 import { progressService } from '@/services/progressService';
 import { gamificationService } from '@/services/gamificationService';
 import {

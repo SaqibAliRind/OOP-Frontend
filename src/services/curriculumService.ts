@@ -1,23 +1,36 @@
 import type { Curriculum, Module, Lesson, UserProgress, LearningPath } from '@/types';
-import { curriculum, learningPaths } from '@/data/curriculum';
+import { javaCurriculum, oopCurriculum, learningPaths } from '@/data/curriculum';
+import { cCurriculum } from '@/data/curriculum/cCurriculum';
 
 class CurriculumService {
-  private curriculum: Curriculum;
+  private currentCourseId: string;
 
   constructor() {
-    this.curriculum = curriculum;
+    this.currentCourseId = localStorage.getItem('oop_universe_course') || 'oop'; // Default to oop
+  }
+
+  setCourse(courseId: 'java' | 'oop' | 'c') {
+    this.currentCourseId = courseId;
+    localStorage.setItem('oop_universe_course', courseId);
+    window.location.reload(); // Reload to refresh the whole app state
+  }
+
+  getCurrentCourseId() {
+    return this.currentCourseId;
   }
 
   getCurriculum(): Curriculum {
-    return this.curriculum;
+    if (this.currentCourseId === 'java') return javaCurriculum;
+    if (this.currentCourseId === 'c') return cCurriculum;
+    return oopCurriculum;
   }
 
   getModule(moduleId: string): Module | undefined {
-    return this.curriculum.modules.find(m => m.id === moduleId);
+    return this.getCurriculum().modules.find(m => m.id === moduleId);
   }
 
   getLesson(lessonId: string): Lesson | undefined {
-    for (const module of this.curriculum.modules) {
+    for (const module of this.getCurriculum().modules) {
       const lesson = module.lessons.find(l => l.id === lessonId);
       if (lesson) return lesson;
     }
@@ -30,16 +43,17 @@ class CurriculumService {
   }
 
   getNextLesson(currentLessonId: string): Lesson | undefined {
-    for (let i = 0; i < this.curriculum.modules.length; i++) {
-      const module = this.curriculum.modules[i];
+    const cur = this.getCurriculum();
+    for (let i = 0; i < cur.modules.length; i++) {
+      const module = cur.modules[i];
       const lessonIndex = module.lessons.findIndex(l => l.id === currentLessonId);
       if (lessonIndex !== -1) {
         if (lessonIndex + 1 < module.lessons.length) {
           return module.lessons[lessonIndex + 1];
         }
         // Check next module
-        if (i + 1 < this.curriculum.modules.length) {
-          return this.curriculum.modules[i + 1].lessons[0];
+        if (i + 1 < cur.modules.length) {
+          return cur.modules[i + 1].lessons[0];
         }
         return undefined;
       }
@@ -48,8 +62,9 @@ class CurriculumService {
   }
 
   getPreviousLesson(currentLessonId: string): Lesson | undefined {
-    for (let i = 0; i < this.curriculum.modules.length; i++) {
-      const module = this.curriculum.modules[i];
+    const cur = this.getCurriculum();
+    for (let i = 0; i < cur.modules.length; i++) {
+      const module = cur.modules[i];
       const lessonIndex = module.lessons.findIndex(l => l.id === currentLessonId);
       if (lessonIndex !== -1) {
         if (lessonIndex > 0) {
@@ -57,7 +72,7 @@ class CurriculumService {
         }
         // Check previous module
         if (i > 0) {
-          const prevModule = this.curriculum.modules[i - 1];
+          const prevModule = cur.modules[i - 1];
           return prevModule.lessons[prevModule.lessons.length - 1];
         }
         return undefined;
@@ -74,25 +89,14 @@ class CurriculumService {
     return learningPaths[pathId];
   }
 
-  isModuleUnlocked(moduleId: string, progress: UserProgress): boolean {
-    const module = this.getModule(moduleId);
-    if (!module) return false;
-    if (module.prerequisiteModuleIds.length === 0) return true;
-    return module.prerequisiteModuleIds.every(prereqId => {
-      if (progress.completedModules[prereqId] !== undefined) return true;
-      const prereq = this.getModule(prereqId);
-      if (!prereq || prereq.lessons.length === 0) return false;
-      return prereq.lessons.every(l => progress.completedLessons[l.id] !== undefined);
-    });
+  isModuleUnlocked(_moduleId: string, _progress: UserProgress): boolean {
+    // Unlock all modules globally as requested
+    return true;
   }
 
-  isLessonUnlocked(lessonId: string, progress: UserProgress): boolean {
-    const lesson = this.getLesson(lessonId);
-    if (!lesson) return false;
-    if (lesson.prerequisites.length === 0) return true;
-    return lesson.prerequisites.every(prereqId =>
-      progress.completedLessons[prereqId] !== undefined
-    );
+  isLessonUnlocked(_lessonId: string, _progress: UserProgress): boolean {
+    // Unlock all lessons globally as requested
+    return true;
   }
 
   getModuleProgress(moduleId: string, progress: UserProgress): number {
@@ -103,7 +107,7 @@ class CurriculumService {
   }
 
   getTotalProgress(progress: UserProgress): number {
-    const totalLessons = this.curriculum.totalLessons;
+    const totalLessons = this.getCurriculum().totalLessons;
     if (totalLessons === 0) return 0;
     return Math.round((Object.keys(progress.completedLessons).length / totalLessons) * 100);
   }

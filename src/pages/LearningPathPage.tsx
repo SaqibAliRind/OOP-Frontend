@@ -9,7 +9,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useLearningPath } from '@/hooks/useLearningPath';
-import { curriculum } from '@/data/curriculum';
+import { curriculumService } from '@/services/curriculumService';
+const curriculum = curriculumService.getCurriculum();
 import { MODULES_WITH_PROGRESS } from '@/data/learningPathData';
 import { progressService } from '@/services/progressService';
 import { masteryService } from '@/services/masteryService';

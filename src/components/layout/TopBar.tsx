@@ -173,7 +173,7 @@ export function TopBar({ onMenuClick, sidebarOpen }: TopBarProps) {
             size="icon"
             onClick={() => setAdminOpen(true)}
             aria-label="Admin Feedback"
-            className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+            className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hidden sm:inline-flex"
           >
             <Lock className="w-5 h-5" />
           </Button>

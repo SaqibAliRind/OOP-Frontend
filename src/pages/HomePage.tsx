@@ -37,6 +37,7 @@ const modules = curriculumService.getCurriculum().modules;
 const progress = progressService.getProgress();
 const nextAction = progressService.getNextBestAction();
 const dailyGoal = gamificationService.getDailyGoal();
+const currentCourse = curriculumService.getCurrentCourseId();
 
 const features = [
   {
@@ -166,10 +167,6 @@ function AnimatedCodePanel() {
             {visibleLines >= codeLines.length ? 'Ready. Press Run to execute.' : 'Compiling...'}
           </span>
         </div>
-        {/* Feedback Section */}
-        <div className="mt-16 mb-8 flex justify-center">
-          <FeedbackForm />
-        </div>
       </div>
     </div>
   );
@@ -204,9 +201,22 @@ export function HomePage() {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-16 md:py-24">
         {/* Background effects */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-accent-primary)]/5 via-transparent to-[var(--color-accent-secondary)]/5" />
-        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse,rgba(59,130,246,0.08),transparent_70%)]" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-accent-primary)]/10 via-transparent to-[var(--color-accent-secondary)]/10" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.05]" />
+        
+        {/* Glowing Nebula Effect */}
+        <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-[radial-gradient(ellipse,rgba(99,102,241,0.15),transparent_70%)] animate-pulse" style={{ animationDuration: '4s' }} />
+        
+        {/* Floating Stars for Kids / Universe theme */}
+        <motion.div animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }} transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }} className="absolute top-[15%] left-[10%] text-[var(--color-xp-gold)] opacity-70">
+          <Star className="w-8 h-8 fill-current" />
+        </motion.div>
+        <motion.div animate={{ y: [0, 30, 0], rotate: [0, -15, 10, 0] }} transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }} className="absolute top-[25%] right-[15%] text-[var(--color-accent-info)] opacity-60">
+          <Rocket className="w-10 h-10" />
+        </motion.div>
+        <motion.div animate={{ y: [0, -15, 0], scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }} className="absolute bottom-[20%] left-[20%] text-[var(--color-accent-secondary)] opacity-50">
+          <Box className="w-12 h-12" />
+        </motion.div>
 
         <div className="relative max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -215,6 +225,7 @@ export function HomePage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
+              className="relative z-10"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -223,24 +234,26 @@ export function HomePage() {
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[var(--color-accent-primary)]/12 border border-[var(--color-accent-primary)]/25 text-[var(--color-accent-primary)] text-sm font-medium mb-6"
               >
                 <Zap className="w-4 h-4" />
-                <span>Interactive Java OOP Platform</span>
+                <span>
+                  {currentCourse === 'c' ? 'Interactive C Language Platform & Compiler' : 
+                   currentCourse === 'java' ? 'Java Fundamentals Platform & Compiler' : 
+                   'Interactive OOP Platform & Compiler'}
+                </span>
               </motion.div>
 
-              <h1 className="font-display text-3xl sm:text-4xl md:text-6xl font-bold text-[var(--color-text-primary)] mb-5 leading-[1.1]">
-                Learn OOP.{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)]">
-                  See OOP.
+              <h1 className="font-display text-4xl sm:text-5xl md:text-7xl font-bold text-[var(--color-text-primary)] mb-5 leading-[1.1]">
+                Explore {currentCourse === 'c' ? 'C Lang.' : currentCourse === 'java' ? 'Java.' : 'OOP.'}{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-info)] to-[var(--color-accent-primary)]">
+                  Code Universe.
                 </span>{' '}
-                Code OOP.{' '}
-                Debug OOP.{' '}
+                <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-xp-gold)] to-[var(--color-accent-warning)]">
-                  Master OOP.
+                  Level Up Your Skills.
                 </span>
               </h1>
 
               <p className="text-lg text-[var(--color-text-secondary)] max-w-lg mb-8 leading-relaxed">
-                A university-level interactive Java OOP platform.
-                Visualize concepts in 3D, write real code, debug live, and master OOP like a pro.
+                Welcome to the {currentCourse === 'c' ? 'C Programming Universe' : currentCourse === 'java' ? 'Java Basics Universe' : 'OOP Universe'}! 🚀 Learn anywhere, solve scenario-based questions, debug mistakes, and use our built-in compiler to write real code.
               </p>
 
               {/* Mission Card */}
@@ -283,15 +296,15 @@ export function HomePage() {
                 </motion.div>
               )}
 
-              <div className="flex flex-col sm:flex-row items-start gap-3">
-                <Button size="lg" asChild className="group">
+              <div className="flex flex-col sm:flex-row items-start gap-4">
+                <Button size="lg" asChild className="group shadow-glow hover:shadow-glow-accent transition-shadow">
                   <Link to="/learn">
-                    <Zap className="w-5 h-5 mr-2" />
-                    Start Learning
-                    <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-1" />
+                    <Rocket className="w-5 h-5 mr-2 animate-bounce" />
+                    Launch Mission
+                    <ArrowRight className="w-5 h-5 ml-2 transition-transform group-hover:translate-x-2" />
                   </Link>
                 </Button>
-                <Button variant="outline" size="lg" asChild>
+                <Button variant="outline" size="lg" asChild className="hover:border-[var(--color-accent-info)] hover:text-[var(--color-accent-info)] transition-colors">
                   <Link to="/3d">
                     <Box className="w-5 h-5 mr-2" />
                     Enter 3D Lab
@@ -326,6 +339,16 @@ export function HomePage() {
               <AnimatedCodePanel />
             </motion.div>
           </div>
+          
+          {/* Mobile Feedback Form inline on HomePage */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="mt-12 flex justify-center w-full relative z-20 px-4 lg:hidden"
+          >
+            <FeedbackForm />
+          </motion.div>
         </div>
       </section>
 

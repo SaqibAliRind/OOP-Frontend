@@ -1,4 +1,5 @@
-import { curriculum } from '@/data/curriculum';
+import { curriculumService } from '@/services/curriculumService';
+const curriculum = curriculumService.getCurriculum();
 import { progressService } from '@/services/progressService';
 
 export const MODULE_ORDER = [

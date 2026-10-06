@@ -1,5 +1,6 @@
 import type { SearchResult } from '@/types';
-import { curriculum } from '@/data/curriculum';
+import { curriculumService } from '@/services/curriculumService';
+const curriculum = curriculumService.getCurriculum();
 import { searchQuestions } from '@/data/questions';
 import { safeGetJSON } from '@/utils/safeStorage';
 
