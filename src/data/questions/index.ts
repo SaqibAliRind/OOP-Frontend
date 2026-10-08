@@ -20,17 +20,21 @@ import { expansionQuestions01to06 } from './expansion01to06';
 import { expansionQuestions07to15 } from './expansion07to15';
 import { expansion2Questions } from './expansion2';
 import { expansion3Questions } from './expansion3';
+import {
+  javaMistakeQuestions, javaOutputQuestions, javaDebugChallenges, javaQuickChecks,
+  cMistakeQuestions, cOutputQuestions, cDebugChallenges, cQuickChecks,
+} from './javaAndCQuestions';
 
 export type { QuizQuestion, ScenarioQuestion, MistakeQuestion, OutputQuestion, DebugChallenge, CodeCompletionQuestion };
 
 const modQuiz = [module07Questions, module08Questions, module09Questions, module10Questions, module11Questions, module12Questions, module13Questions, module14Questions, module15Questions];
 
 export const allQuestions = {
-  quiz: [...quizQuestions, ...module01Questions.quickChecks as any, ...module02Questions.quickChecks as any, ...module03to06Questions.quickChecks as any, ...modQuiz.flatMap(m => m.quickChecks as any), ...expansionQuestions01to06.quickChecks as any, ...expansionQuestions07to15.quickChecks as any, ...expansion2Questions.quickChecks as any, ...expansion3Questions.quickChecks as any],
+  quiz: [...quizQuestions, ...module01Questions.quickChecks as any, ...module02Questions.quickChecks as any, ...module03to06Questions.quickChecks as any, ...modQuiz.flatMap(m => m.quickChecks as any), ...expansionQuestions01to06.quickChecks as any, ...expansionQuestions07to15.quickChecks as any, ...expansion2Questions.quickChecks as any, ...expansion3Questions.quickChecks as any, ...javaQuickChecks, ...cQuickChecks],
   scenario: [...scenarioQuestions, ...module01Questions.scenarios, ...module02Questions.scenarios, ...module03to06Questions.scenarios, ...modQuiz.flatMap(m => m.scenarios), ...expansionQuestions01to06.scenarios, ...expansionQuestions07to15.scenarios, ...expansion2Questions.scenarios, ...expansion3Questions.scenarios],
-  mistake: [...mistakeQuestions, ...module01Questions.mistakes, ...module02Questions.mistakes, ...module03to06Questions.mistakes, ...modQuiz.flatMap(m => m.mistakes), ...expansionQuestions01to06.mistakes, ...expansionQuestions07to15.mistakes, ...expansion2Questions.mistakes, ...expansion3Questions.mistakes],
-  output: [...outputQuestions, ...module01Questions.outputs, ...module02Questions.outputs, ...module03to06Questions.outputs, ...modQuiz.flatMap(m => m.outputs), ...expansionQuestions01to06.outputs, ...expansionQuestions07to15.outputs, ...expansion2Questions.outputs, ...expansion3Questions.outputs],
-  debug: [...debugChallenges, ...module01Questions.debugs, ...module02Questions.debugs, ...module03to06Questions.debugs, ...modQuiz.flatMap(m => m.debugs), ...expansionQuestions01to06.debugs, ...expansionQuestions07to15.debugs, ...expansion2Questions.debugs, ...expansion3Questions.debugs],
+  mistake: [...mistakeQuestions, ...module01Questions.mistakes, ...module02Questions.mistakes, ...module03to06Questions.mistakes, ...modQuiz.flatMap(m => m.mistakes), ...expansionQuestions01to06.mistakes, ...expansionQuestions07to15.mistakes, ...expansion2Questions.mistakes, ...expansion3Questions.mistakes, ...javaMistakeQuestions, ...cMistakeQuestions],
+  output: [...outputQuestions, ...module01Questions.outputs, ...module02Questions.outputs, ...module03to06Questions.outputs, ...modQuiz.flatMap(m => m.outputs), ...expansionQuestions01to06.outputs, ...expansionQuestions07to15.outputs, ...expansion2Questions.outputs, ...expansion3Questions.outputs, ...javaOutputQuestions, ...cOutputQuestions],
+  debug: [...debugChallenges, ...module01Questions.debugs, ...module02Questions.debugs, ...module03to06Questions.debugs, ...modQuiz.flatMap(m => m.debugs), ...expansionQuestions01to06.debugs, ...expansionQuestions07to15.debugs, ...expansion2Questions.debugs, ...expansion3Questions.debugs, ...javaDebugChallenges, ...cDebugChallenges],
   codeCompletion: [...codeCompletionQuestions, ...module01Questions.codeCompletions, ...module02Questions.codeCompletions, ...module03to06Questions.codeCompletions, ...modQuiz.flatMap(m => m.codeCompletions), ...expansionQuestions01to06.codeCompletions, ...expansionQuestions07to15.codeCompletions, ...expansion2Questions.codeCompletions, ...expansion3Questions.codeCompletions],
 };
 
