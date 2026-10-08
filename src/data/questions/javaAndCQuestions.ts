@@ -157,6 +157,7 @@ export const javaDebugChallenges: DebugChallenge[] = [
 }`,
     explanation: 'Bug 1: main() must be lowercase — JVM looks for "main" not "Main". Bug 2: println statement is missing the semicolon at the end.',
     difficulty: 'easy',
+    xpReward: 100,
     topicTags: ['main method', 'syntax', 'semicolon'],
   },
   {
@@ -189,6 +190,7 @@ export const javaDebugChallenges: DebugChallenge[] = [
 }`,
     explanation: 'count-- decrements count, making it go 1, 0, -1, -2... forever. It never reaches the exit condition (count > 5). Change to count++ to increment toward the exit.',
     difficulty: 'easy',
+    xpReward: 100,
     topicTags: ['while loop', 'infinite loop', 'increment'],
   },
 ];
@@ -402,6 +404,7 @@ int main() {
 }`,
     explanation: 'Bug 1: Printf should be printf (lowercase). Bugs 2 & 3: Both statements are missing semicolons (;).',
     difficulty: 'easy',
+    xpReward: 100,
     topicTags: ['syntax', 'printf', 'semicolon'],
   },
   {
@@ -435,6 +438,7 @@ int main() {
 }`,
     explanation: 'scanf needs a pointer (memory address) to store the input. &num means "the address of num". Without &, you pass an uninitialized garbage value as an address, causing a crash.',
     difficulty: 'medium',
+    xpReward: 150,
     topicTags: ['scanf', 'pointers', 'address-of'],
   },
 ];
